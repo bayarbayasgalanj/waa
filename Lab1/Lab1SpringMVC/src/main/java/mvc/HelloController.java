@@ -34,15 +34,15 @@ public class HelloController {
         return new ModelAndView("calc", params);
     }
 
-    private double calculate(String operator, int x, int y) {
-        if (operator.equals("+")) {
-            return x + y;
-        } else if (operator.equals("-")) {
-            return x - y;
-        } else if (operator.equals("*")) {
-            return x * y;
-        } else if (operator.equals("/")) {
-            return x / y;
+    private double calculate(String op, int num1, int num2) {
+        if (op.equals("+")) {
+            return num1 + num2;
+        } else if (op.equals("-")) {
+            return num1 - num2;
+        } else if (op.equals("*")) {
+            return num1 * num2;
+        } else if (op.equals("/")) {
+            return num1 / num2;
         }
         return 0;
     }
