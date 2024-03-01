@@ -1,4 +1,4 @@
-a. Part 1,2 and 3 is done.
+a. Part 1, 2, 3 and 4 is done.
 b.
 I hereby declare that this submission is my own original work and to the best of my
 knowledge it contains no materials previously published or written by another person.
