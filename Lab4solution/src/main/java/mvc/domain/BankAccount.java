@@ -1,14 +1,25 @@
 package mvc.domain;
 
-import java.util.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import javax.validation.constraints.Min;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
 
 public class BankAccount {
+
+    @NotNull
+    @Min(1)
     private int accountNumber;
+
+    @NotEmpty
+    @Size(min=2, max=20)
     private String accountHolder;
     private double balance;
     private Collection<BankAccountTransaction> transactions = new ArrayList<BankAccountTransaction>();
-    public BankAccount() {
-    }
 
     public BankAccount(int accountNumber, String accountHolder, double balance) {
         this.accountNumber = accountNumber;

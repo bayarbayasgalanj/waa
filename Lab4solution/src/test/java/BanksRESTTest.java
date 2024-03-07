@@ -5,9 +5,12 @@ import mvc.domain.Book;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import java.util.HashMap;
+
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.hasItems;
+import static org.hamcrest.Matchers.hasEntry;
 
 public class BanksRESTTest {
 
@@ -40,6 +43,38 @@ public class BanksRESTTest {
                 .delete("bankAccounts/888999");
     }
     @Test
+    public void testGetAllBankAccounts() {
+        BankAccount bankAccount1 = new BankAccount(888999, "Bayar", 100.0);
+        BankAccount bankAccount2 = new BankAccount(444555, "Solo", 690.0);
+        given()
+                .contentType("application/json")
+                .body(bankAccount1)
+                .when().post("/createAccount").then()
+                .statusCode(200);
+        given()
+                .contentType("application/json")
+                .body(bankAccount2)
+                .when().post("/createAccount").then()
+                .statusCode(200);
+
+        given()
+                .when()
+                .get("/bankAccounts")
+                .then()
+                .statusCode(200)
+                .and()
+                .body("accountNumber", hasItems(888999, 444555))
+                .body("accountHolder",hasItems("Bayar", "Solo"))
+                .body("balance",hasItems(100.0F, 690.0F));
+        //cleanup
+        given()
+                .when()
+                .delete("bankAccounts/888999");
+        given()
+                .when()
+                .delete("bankAccounts/444555");
+    }
+    @Test
     public void testCreateAccount() {
         BankAccount bankAccount = new BankAccount(888999, "Bayar", 100.0);
         given()
@@ -59,6 +94,29 @@ public class BanksRESTTest {
         given()
                 .when()
                 .delete("bankAccounts/888999");
+    }
+    @Test
+    public void testValidationCreateAccount() {
+        HashMap<String, String> hashMap = new HashMap<>();
+
+        hashMap.put("accountNumber", "888999");
+//        hashMap.put("accountHolder", "MDP");
+        hashMap.put("balance", "450.0");
+
+        given()
+                .contentType("application/json")
+                .body(hashMap)
+                .when().post("/createAccount").then()
+                .statusCode(400)
+                .and()
+                .body("data",equalTo(null))
+                .body("fieldError", hasEntry("accountHolder", "must not be empty"))
+                .body("isSuccess",equalTo(false)
+                );
+        //cleanup
+        given()
+                .when()
+                .delete("books/888999");
     }
     @Test
     public void testRemoveAccount() {
