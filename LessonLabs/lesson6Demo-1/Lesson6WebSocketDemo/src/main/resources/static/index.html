@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>WebSocket Chat Application</title>
+    <script type="text/javascript">
+var ws;
+
+function connect() {
+
+	ws = new WebSocket("ws://localhost:8080/user");
+
+	ws.onmessage = function(event) {
+		showdata(event.data);
+	}
+
+    ws.onclose = function(event){
+        showdata("Connection closed!");
+    };
+
+	helloworldmessage.innerHTML = "";
+}
+
+function disconnect() {
+	if (ws != null) {
+		ws.close();
+	}
+}
+
+function sendData() {
+	var text = document.getElementById("user").value;
+	ws.send(text);
+}
+
+function showdata(message) {
+	helloworldmessage.innerHTML += "<br/>" + message;
+}
+</script>
+</head>
+<body>
+<div>
+    <div>
+        <div>
+            <div>
+                <button id="connect" type="button" onclick="connect();" >Connect</button>
+                <button id="disconnect" type="button" onclick="disconnect();" >Disconnect</button>
+            </div>
+        </div>
+    </div>
+    <div>
+        <div>
+            <table id="chat">
+                <thead>
+                <tr>
+                    <th>Welcome user. Please enter you name</th>
+                </tr>
+                </thead>
+                <tbody id="helloworldmessage">
+                </tbody>
+            </table>
+        </div>
+        <div>
+            <div>
+                <div>
+                    <textarea id="user" placeholder="Write your name here..." required></textarea>
+                </div>
+                <button id="send" type="button" onclick="sendData();">Send</button>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
