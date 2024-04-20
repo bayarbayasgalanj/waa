@@ -1,0 +1,39 @@
+/* App.css */
+
+.App {
+  text-align: center;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.Counter {
+  margin: 10px;
+  padding: 10px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  display: inline-block;
+  vertical-align: top;
+}
+
+.Counter h2 {
+  margin: 0 0 10px 0;
+  padding: 0;
+  color: #333;
+}
+
+.Counter button {
+  margin: 0 5px;
+  padding: 5px 10px;
+  background-color: #f7f7f7;
+  border: 1px solid #ddd;
+  cursor: pointer;
+}
+
+.Counter button:hover {
+  background-color: #e7e7e7;
+}
+
+.CountersContainer {
+  display: inline-block;
+  margin-top: 20px;
+}
