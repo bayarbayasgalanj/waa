@@ -7,6 +7,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Collection;
+import java.util.stream.Collectors;
+import java.util.List;
 
 @Controller
 public class BankController {
@@ -28,10 +31,17 @@ public class BankController {
         }
         return new ResponseEntity<BankAccount>(bankAccount, HttpStatus.OK);
     }
+    @CrossOrigin
+    @GetMapping("/bankAccounts")
+    public ResponseEntity<List<BankAccount>> getAllBankAccounts() {
+        List<BankAccount> accountList = bankAccounts.values().stream().collect(Collectors.toList());
+        return new ResponseEntity<>(accountList, HttpStatus.OK);
+    }
 
     @CrossOrigin
     @PostMapping("/createAccount")
     public ResponseEntity<?> createAccount(@RequestBody BankAccount bankAccount) {
+        System.out.println(bankAccount);
         bankAccounts.put(bankAccount.getAccountNumber(), bankAccount);
         return new ResponseEntity<BankAccount>(bankAccount, HttpStatus.OK);
     }
@@ -50,6 +60,7 @@ public class BankController {
     @CrossOrigin
     @PutMapping("/bankAccounts/deposit/{accountNumber}/{amount}")
     public ResponseEntity<?> deposit(@PathVariable Integer accountNumber, @PathVariable double amount) {
+        System.out.println(accountNumber+"  "+amount);
         BankAccount bA = bankAccounts.get(accountNumber);
         if (bA == null) {
             return new ResponseEntity<CustomErrorType>(new CustomErrorType("Bank Accounts with accountNumber= " + accountNumber + " is not available"),HttpStatus.NOT_FOUND);
@@ -57,7 +68,7 @@ public class BankController {
         bA.deposit(amount);
         return new ResponseEntity<CustomErrorType>(new CustomErrorType("Bank Accounts with accountNumber= " + accountNumber + " added "+amount+". After that total residual amount "+bA.getBalance()), HttpStatus.OK);
     }
-    
+
     @CrossOrigin
     @PutMapping("/bankAccounts/withdraw/{accountNumber}/{amount}")
     public ResponseEntity<?> withdraw(@PathVariable Integer accountNumber, @PathVariable double amount) {
