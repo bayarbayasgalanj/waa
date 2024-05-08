@@ -18,6 +18,7 @@ public class BankController {
         bankAccounts.put(555000, new BankAccount(555000, "Shujat", 200.0));
     }
 
+    @CrossOrigin
     @GetMapping("/bankAccounts/{accountNumber}")
     public ResponseEntity<?> getAccount(@PathVariable Integer accountNumber) {
         BankAccount bankAccount = bankAccounts.get(accountNumber);
@@ -27,11 +28,15 @@ public class BankController {
         }
         return new ResponseEntity<BankAccount>(bankAccount, HttpStatus.OK);
     }
+
+    @CrossOrigin
     @PostMapping("/createAccount")
     public ResponseEntity<?> createAccount(@RequestBody BankAccount bankAccount) {
         bankAccounts.put(bankAccount.getAccountNumber(), bankAccount);
         return new ResponseEntity<BankAccount>(bankAccount, HttpStatus.OK);
     }
+
+    @CrossOrigin
     @DeleteMapping("/bankAccounts/{accountNumber}")
     public ResponseEntity<?> removeAccount(@PathVariable Integer accountNumber) {
         BankAccount bankAccount = bankAccounts.get(accountNumber);
@@ -42,6 +47,7 @@ public class BankController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    @CrossOrigin
     @PutMapping("/bankAccounts/deposit/{accountNumber}/{amount}")
     public ResponseEntity<?> deposit(@PathVariable Integer accountNumber, @PathVariable double amount) {
         BankAccount bA = bankAccounts.get(accountNumber);
@@ -51,6 +57,8 @@ public class BankController {
         bA.deposit(amount);
         return new ResponseEntity<CustomErrorType>(new CustomErrorType("Bank Accounts with accountNumber= " + accountNumber + " added "+amount+". After that total residual amount "+bA.getBalance()), HttpStatus.OK);
     }
+    
+    @CrossOrigin
     @PutMapping("/bankAccounts/withdraw/{accountNumber}/{amount}")
     public ResponseEntity<?> withdraw(@PathVariable Integer accountNumber, @PathVariable double amount) {
         BankAccount bA = bankAccounts.get(accountNumber);
